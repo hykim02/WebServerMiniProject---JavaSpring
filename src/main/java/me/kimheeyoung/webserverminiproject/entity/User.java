@@ -10,19 +10,19 @@ public class User {
     private Long id;
 
     private String username;
-    private String password;
-    private Boolean rentalCheck;
+    private Long password;
+    private int numOfBooks;
 
     // constructor
     public User() {
 
     }
 
-    public User(Long id, String username, String password, Boolean rentalCheck) {
+    public User(Long id, String username, Long password, int numOfBooks) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.rentalCheck = rentalCheck;
+        this.numOfBooks = numOfBooks;
     }
 
     // getter
@@ -34,11 +34,11 @@ public class User {
         return username;
     }
 
-    public String getPassword() {
+    public Long getPassword() {
         return password;
     }
 
-    public Boolean getRentalCheck() {return rentalCheck;}
+    public int getNumOfBooks() {return numOfBooks;}
 
     // setter
     public void setId(Long id) {
@@ -49,9 +49,9 @@ public class User {
         this.username = username;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(Long password) {
         this.password = password;
     }
 
-    public void setRentalCheck(Boolean rentalCheck) {this.rentalCheck = rentalCheck;}
+    public void setNumOfBooks(int numOfBooks) {this.numOfBooks = numOfBooks;}
 }
