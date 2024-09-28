@@ -38,4 +38,15 @@ public class UserController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping("/check")
+    public Boolean registerUser(@RequestBody Long password) {
+        boolean isExist = userService.isUserExist(password);
+
+        if (isExist) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
