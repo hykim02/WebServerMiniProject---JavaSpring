@@ -19,28 +19,7 @@
 
     <div id="registrationStatus"></div>
 
-    <h2>도서 검색</h2>
-    <input type="text"
-           id="searchInput"
-           placeholder="책 제목을 입력하세요.">
-    <button onclick="searchBooks()">검색</button>
-
-    <div id="bookList"></div>
-
     <script>
-        function serachBooks() {
-            const title = document.getElementById('searchInput').value;
-            fetch(`http://localhost:8080/api/books/search?title=${title}`)
-                .then(response => response.json())
-                .then(data => {
-                    let output = '<h3>검색된 도서:</h3>';
-                    data.forEach(book => {
-                        output += '<p>${book.title} by ${book.author} (${book.yearPublished})</p>';
-                    });
-                    document.getElementById('bookList').innerHTML = output;
-                });
-        }
-
         function registerUser() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
