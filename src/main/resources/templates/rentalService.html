@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Rental Service</title>
+</head>
+<body>
+    <h1>도서 대여 시스템</h1>
+
+    <h2>도서 검색</h2>
+    <input type="text"
+           id="searchInput"
+           placeholder="책 제목을 입력하세요.">
+    <button onclick="searchBooks()">검색</button>
+
+    <div id="bookList"></div>
+
+    <script>
+        function serachBooks() {
+            const title = document.getElementById('searchInput').value;
+            fetch(`http://localhost:8080/api/books/search?title=${title}`)
+                .then(response => response.json())
+                .then(data => {
+                    let output = '<h3>Books Found:</h3>';
+                    data.forEach(book => {
+                        output += '<p>${book.title} by ${book.author} (${book.yearPublished})</p>';
+                    });
+                    document.getElementById('bookList').innerHTML = output;
+                })
+        }
+    </script>
+</body>
+</html>
