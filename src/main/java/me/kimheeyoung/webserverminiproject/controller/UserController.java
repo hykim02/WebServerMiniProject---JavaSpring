@@ -24,6 +24,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    // 사용자 등록 api
     @PostMapping("/register")
     public ResponseEntity<Map<String, Boolean>> registerUser(@RequestBody User user) {
         boolean isExist = userService.isUserExist(user.getPassword());
@@ -39,6 +40,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
+    // 사용자 등록 여부 확인 api
     @PostMapping("/check")
     public Boolean registerUser(@RequestBody Long password) {
         boolean isExist = userService.isUserExist(password);

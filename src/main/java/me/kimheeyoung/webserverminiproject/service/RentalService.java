@@ -36,9 +36,14 @@ public class RentalService {
     }
 
     // 책 반납 로직
-    public void returnBook(Rental rental) {
+    public User returnBook(Rental rental) {
         rental.setReturned(true); // 책 반납 상태 변경
         rental.getBook().setAvailable(true); // 책 대여 상태 변경
+
+        int bookNum = rental.getUser().getNumOfBooks();
+        rental.getUser().setNumOfBooks(bookNum-1);
         rentalRepository.save(rental); // 대여 내역 업데이트
+
+        return rental.getUser();
     }
 }

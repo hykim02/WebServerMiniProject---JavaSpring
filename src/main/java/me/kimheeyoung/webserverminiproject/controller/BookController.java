@@ -17,12 +17,11 @@ import java.util.List;
 @RequestMapping("/api/books")
 public class BookController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
-
     @Autowired
     private BookService bookService;
 
     // 파라미터 이름 명시(인식 문제로)
+    // 책 조회 및 검색 api
     @GetMapping("/search")
     public List<Book> searchBooks(@RequestParam(name = "title") String title) {
         List<Book> books = bookService.searchBooks(title);

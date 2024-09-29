@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Return Service</title>
+</head>
+<body>
+<h1>도서 대여 시스템</h1>
+
+<h3>대여한 도서 조회하기</h3>
+<input type="text"
+       id="password"
+       placeholder="학번을 입력해주세요">
+<button onclick="searchBooks()">확인</button>
+
+<div id="registrationStatus"></div>
+<div id="returnStatus"></div>
+
+<script>
+    // 반납할 도서 조회 로직
+    function searchBooks() {
+        // 버튼 클릭 시 password 값을 가져옴
+        const password = document.getElementById('password').value;
+
+        if (!password) {
+            alert("학번을 입력해주세요.");
+            return;
+        }
+
+        fetch(`http://localhost:8080/api/rentals/search?password=${password}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log(data);
+
+                let output = '<h3>조회 결과</h3>';
+            data.forEach(rental => {
+                if (!rental.returned) {
+                    output += `<p><b>사용자:</b>${rental.user.username} <b>대여한 책:</b>${rental.user.numOfBooks}권
+                            <b>제목:</b>${rental.book.title} <b>대여한 날짜:</b>${rental.rentalDate}
+                            <button id="return" onclick="returnBooks(${rental.id})">반납</button></p>`;
+                }
+                })
+                document.getElementById('registrationStatus').innerHTML = output;
+            })
+            .catch(error => {
+                console.error('Error during fetch:', error);
+                document.getElementById('registrationStatus').innerHTML = "조회 중 오류가 발생했습니다.";
+            });
+    }
+
+    // 도서 반납 로직
+    function returnBooks(rentalId) {
+
+        fetch(`http://localhost:8080/api/rentals/return?rentalId=${rentalId}`, {
+            method: 'POST'
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                output = `<h2>반납되었습니다.</h2>`
+                output += `<p><b>남은 책:</b>${data.numOfBooks}권</p>`
+                document.getElementById("returnStatus").innerHTML = output;
+
+            })
+            .catch(error => {
+                console.error('Error during return:', error);
+                document.getElementById('returnStatus').innerHTML = `<h4>반납 중 오류가 발생하였습니다.</h4>`;
+            });
+    }
+</script>
+</body>
+</html>
