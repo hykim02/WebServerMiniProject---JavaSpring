@@ -17,10 +17,12 @@ public class RentalService {
 
     // 책 대여 로직
     public Rental rentBook(User user, Book book) {
-        if (!book.isAvailable()) {
-            throw new IllegalStateException("Book is not available");
+        // 대여 불가능한 경우 (대여한 책이 3권 이상일 경우)
+        if (!book.isAvailable() || user.getNumOfBooks() >= 3) {
+            throw new IllegalStateException("책 대여 불가능");
         }
 
+        // 대여 가능한 경우
         Rental rental = new Rental();
         rental.setBook(book);
         rental.setUser(user);
@@ -28,6 +30,7 @@ public class RentalService {
         rental.setDueDate(LocalDate.now().plusWeeks(2));
         rental.setReturned(false);
 
+        user.setNumOfBooks(user.getNumOfBooks() + 1);
         book.setAvailable(false); // 책 대여 상태 변경
         return rentalRepository.save(rental); // 대여 내역 저장
     }

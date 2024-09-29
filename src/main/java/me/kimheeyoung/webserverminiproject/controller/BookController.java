@@ -25,7 +25,6 @@ public class BookController {
     // 파라미터 이름 명시(인식 문제로)
     @GetMapping("/search")
     public List<Book> searchBooks(@RequestParam(name = "title") String title) {
-        logger.info("title: {}", title);
         List<Book> books = bookService.searchBooks(title);
         return books;
     }

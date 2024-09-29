@@ -9,6 +9,7 @@
     <h1>도서 대여 시스템</h1>
 
     <h2>사용자 확인</h2>
+    <h6>학번 확인부터 진행해주세요.</h6>
     <input type="text"
            id="password"
            placeholder="학번을 입력하세요.">
@@ -64,7 +65,7 @@
                         let available;
                         if (book.available == true) {
                             available = "가능"
-                            output += `<p><b>제목</b>:${book.title} <b>저자</b>:${book.author} <b>대여 여부</b>:${available}
+                            output += `<p><b>제목:</b>${book.title} <b>저자:</b>${book.author} <b>대여 여부:</b>${available}
                                         <button onclick="popup('${book.title}', '${book.author}')">대여</button></p>`;
                         } else {
                             available = "불가능"
@@ -83,11 +84,13 @@
             var name = "popup";
             var option = "width = 500, height = 500, top = 100, left = 200, location = no";
 
-            output = `<p><b>제목</b>:${title} <b>저자</b>:${author}</p>`;
+            output = `<p><b>제목:</b>${title} <b>저자:</b>${author}</p>`;
             childWin = window.open(url, name, option);
 
             // 팝업창이 로드된 후에 실행
             childWin.onload = function() {
+                // 자식 창의 전역 변수에 값 전달
+                childWin.bookTitle = title;
                 childWin.document.getElementById('bookinfo').innerHTML = output;
             };
         }

@@ -6,12 +6,43 @@
     <title>Book Rental Popup</title>
 </head>
 <body>
-    <h3>대여 책 정보</h3>
+    <h3>대여할 책</h3>
     <div id="bookinfo"></div>
 
     <h3>사용자 정보</h3>
     <input type="text"
            id="password"
            placeholder="학번을 입력하세요.">
-    <button onclick="checkUsers()">확인</button>
+    <button onclick="rentalBook()">확인</button>
+
+    <div id="rentalinfo"></div>
+
+    <script>
+        // 학번 & 도서 제목을 이용한 도서 대여 로직
+        function rentalBook() {
+            // 자식창에서 부모창이 전달한 데이터 변수에 담기
+            // ||의 왼쪽 문자열이 false이면 오른쪽의 "" 빈문자열 변수에 저장
+            let title = window.bookTitle || "";
+            const password = document.getElementById('password').value;
+
+            console.log("책 제목:", title);
+            console.log("학번:", password);
+
+            // post 할 때는 데이터 보안상 url에 쿼리 포함 X
+            fetch(`http://localhost:8080/api/rentals/rent?password=${password}&title=${title}`, {
+                method: 'POST'
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    // 도서를 찾은 경우
+                    let output = '<h3>도서 대여 완료</h3>';
+                    output += `<p><b>사용자:</b>${data.user.username} <b>대여한 책:</b>${data.user.numOfBooks}권</p>
+                        <p><b>대여 날짜:</b>${data.rentalDate}</p>
+                        <p><b>반납 날짜:</b>${data.dueDate}</p>`;
+                    document.getElementById("rentalinfo").innerHTML = output;
+                })
+
+        }
+    </script>
 </body>
