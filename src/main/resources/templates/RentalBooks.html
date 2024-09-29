@@ -64,8 +64,8 @@
                         let available;
                         if (book.available == true) {
                             available = "가능"
-                            output += `<p><b>제목</b>:${book.title} <b>저자</b>:${book.author}
-                                      <b>대여 여부</b>:${available} <button onclick="">대여</button></p>`;
+                            output += `<p><b>제목</b>:${book.title} <b>저자</b>:${book.author} <b>대여 여부</b>:${available}
+                                        <button onclick="popup('${book.title}', '${book.author}')">대여</button></p>`;
                         } else {
                             available = "불가능"
                             output += `<p><b>제목</b>:${book.title} <b>저자</b>:${book.author}
@@ -76,6 +76,21 @@
                 });
         }
 
+        let childWin;
+        // 책 대여 버튼 클릭 시 팝업 창
+        function popup(title, author) {
+            var url = "RentalPopup.html";
+            var name = "popup";
+            var option = "width = 500, height = 500, top = 100, left = 200, location = no";
+
+            output = `<p><b>제목</b>:${title} <b>저자</b>:${author}</p>`;
+            childWin = window.open(url, name, option);
+
+            // 팝업창이 로드된 후에 실행
+            childWin.onload = function() {
+                childWin.document.getElementById('bookinfo').innerHTML = output;
+            };
+        }
 
     </script>
 </body>
